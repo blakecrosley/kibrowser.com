@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#0B1020" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#FCFCFD" media="(prefers-color-scheme: light)">
 
-    <link rel="canonical" href="https://kibrowser.com{% block canonical %}{{ request.url.path }}{% endblock %}">
+    <link rel="canonical" href="https://941ki.com{% block canonical %}{{ request.url.path }}{% endblock %}">
 
     <!-- Theme-init: runs synchronously to set data-theme before paint, no FOUC.
          Falls back to system preference when no saved theme exists. -->
@@ -30,10 +30,10 @@
     {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "@id": "https://kibrowser.com/#organization",
+        "@id": "https://941ki.com/#organization",
         "name": "941 Apps, LLC",
-        "url": "https://kibrowser.com",
-        "logo": "https://kibrowser.com/static/images/app-icon.png",
+        "url": "https://941ki.com",
+        "logo": "https://941ki.com/static/images/app-icon.png",
         "description": "Maker of Ki, a private web browser for iPhone.",
         "sameAs": [
             "https://blakecrosley.com",
@@ -47,12 +47,12 @@
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "@id": "https://kibrowser.com/#website",
+        "@id": "https://941ki.com/#website",
         "name": "Ki Browser",
-        "url": "https://kibrowser.com",
+        "url": "https://941ki.com",
         "description": "A private web browser for iPhone.",
         "publisher": {
-            "@id": "https://kibrowser.com/#organization"
+            "@id": "https://941ki.com/#organization"
         }
     }
     </script>
@@ -75,9 +75,9 @@
         "author": {
             "@type": "Organization",
             "name": "941 Apps, LLC",
-            "@id": "https://kibrowser.com/#organization"
+            "@id": "https://941ki.com/#organization"
         },
-        "url": "https://kibrowser.com",
+        "url": "https://941ki.com",
         "featureList": [
             "Cross-site tracker blocking by default",
             "Per-site privacy controls",
@@ -91,10 +91,10 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kibrowser.com{{ request.url.path }}">
+    <meta property="og:url" content="https://941ki.com{{ request.url.path }}">
     <meta property="og:title" content="{% block og_title %}Ki Browser | A private browser for iPhone{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Trackers blocked by default. Per-site control. No accounts, no telemetry, no ads.{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}https://kibrowser.com/static/images/app-icon.png{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://941ki.com/static/images/app-icon.png{% endblock %}">
     <meta property="og:site_name" content="Ki Browser">
     <meta property="og:locale" content="en_US">
 
@@ -102,7 +102,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ki Browser | A private browser for iPhone">
     <meta name="twitter:description" content="Trackers blocked by default. Per-site control. No accounts, no telemetry, no ads.">
-    <meta name="twitter:image" content="https://kibrowser.com/static/images/app-icon.png">
+    <meta name="twitter:image" content="https://941ki.com/static/images/app-icon.png">
 
     <link rel="icon" type="image/png" href="{{ url_for('static', path='images/app-icon.png') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', path='images/app-icon.png') }}">

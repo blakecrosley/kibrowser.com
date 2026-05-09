@@ -2,7 +2,7 @@
 
 > A private web browser for iPhone. Built around the user, not the advertiser.
 
-For the summary, see: [llms.txt](https://kibrowser.com/llms.txt)
+For the summary, see: [llms.txt](https://941ki.com/llms.txt)
 
 ## Product Overview
 
@@ -89,13 +89,13 @@ Ki is a privacy-first web browser for iPhone. The product principle is that a br
 
 ## Contact
 
-- Website: https://kibrowser.com
-- Privacy: https://kibrowser.com/privacy
-- Support: https://kibrowser.com/support
+- Website: https://941ki.com
+- Privacy: https://941ki.com/privacy
+- Support: https://941ki.com/support
 - Email: blake@941apps.com
 - Developer: Blake Crosley
 
 ## Related Resources
 
-- Privacy Policy: https://kibrowser.com/privacy
-- Support: https://kibrowser.com/support
+- Privacy Policy: https://941ki.com/privacy
+- Support: https://941ki.com/support

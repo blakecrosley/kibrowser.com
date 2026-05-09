@@ -2,7 +2,7 @@
 
 > A private web browser for iPhone. Trackers blocked by default. Per-site control over cookies and scripts. No accounts, no telemetry, no ads.
 
-For comprehensive information, see: [llms-full.txt](https://kibrowser.com/llms-full.txt)
+For comprehensive information, see: [llms-full.txt](https://941ki.com/llms-full.txt)
 
 ## About
 
@@ -22,7 +22,7 @@ Ki is a privacy-first web browser for iPhone. It blocks cross-site trackers by d
 - **Platform**: iOS 18+
 - **Bundle ID**: com.941apps.Ki
 - **Developer**: Blake Crosley
-- **Website**: https://kibrowser.com
+- **Website**: https://941ki.com
 - **App Privacy**: Data Not Collected
 
 ## Why "Ki"
@@ -31,9 +31,9 @@ Ki (気) is the Japanese word for breath, energy, and presence — the kanji vis
 
 ## Contact
 
-- Website: https://kibrowser.com
-- Privacy: https://kibrowser.com/privacy
-- Support: https://kibrowser.com/support
+- Website: https://941ki.com
+- Privacy: https://941ki.com/privacy
+- Support: https://941ki.com/support
 - Email: blake@941apps.com
 
 ---

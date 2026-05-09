@@ -12,21 +12,21 @@ templates = Jinja2Templates(directory=APP_DIR / "templates")
 _asset_map = build_asset_map(APP_DIR / "static")
 templates.env.globals["asset"] = lambda path: make_asset_url(_asset_map, path)
 
-SITE_URL = "https://kibrowser.com"
+SITE_URL = "https://941ki.com"
 
 
 @router.get("/robots.txt", response_class=PlainTextResponse)
 async def robots_txt():
     """Welcome to all search engines and AI crawlers."""
-    content = """# kibrowser.com robots.txt
+    content = """# 941ki.com robots.txt
 # Welcome to all search engines and AI crawlers
 
 User-agent: *
 Allow: /
 
 # AI Context Files (per llmstxt.org specification)
-# Summary: https://kibrowser.com/llms.txt
-# Full: https://kibrowser.com/llms-full.txt
+# Summary: https://941ki.com/llms.txt
+# Full: https://941ki.com/llms-full.txt
 
 # Search Engines
 User-agent: Googlebot
@@ -90,7 +90,7 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://kibrowser.com/sitemap.xml
+Sitemap: https://941ki.com/sitemap.xml
 """
     return PlainTextResponse(content=content)
 
@@ -186,12 +186,12 @@ Hosting: Railway
 @router.get("/.well-known/security.txt", response_class=PlainTextResponse)
 async def security_txt():
     content = """# Security Policy for Ki Browser
-# https://kibrowser.com
+# https://941ki.com
 
 Contact: mailto:blake@941apps.com
 Expires: 2026-12-31T23:59:59.000Z
 Preferred-Languages: en
-Canonical: https://kibrowser.com/.well-known/security.txt
+Canonical: https://941ki.com/.well-known/security.txt
 
 # Policy
 # If you discover a security vulnerability in Ki, please report it

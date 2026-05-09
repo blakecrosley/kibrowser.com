@@ -35,7 +35,7 @@ app = FastAPI(
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(HeadRequestMiddleware)
 app.add_middleware(RateLimitMiddleware)
-app.add_middleware(SecurityLogMiddleware, site_name="kibrowser.com")
+app.add_middleware(SecurityLogMiddleware, site_name="941ki.com")
 
 app.mount(
     "/static",
