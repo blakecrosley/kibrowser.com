@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy{% endblock %}
+{% block description %}Privacy Policy for Ki Browser. Ki collects no personal data, has no analytics SDK, no advertising SDK, and no telemetry.{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="legal-content">
+        <h1>Privacy Policy</h1>
+        <p class="last-updated">Effective: 2026-05-07 · Last updated: 2026-05-07</p>
+
+        <p>Ki is a web browser for iPhone, made by Blake Crosley. This policy describes what data Ki collects from you. The short version: Ki collects nothing from you and sends nothing about you anywhere.</p>
+
+        <div class="highlight-box">
+            <strong>Summary:</strong> Ki collects no personal data. There is no Ki account, no telemetry, no analytics SDK, and no advertising SDK. Bookmarks, history, tabs, and per-site permissions stay on your iPhone.
+        </div>
+
+        <h2>What Ki collects</h2>
+        <p>Nothing about you, your device, or your behavior is collected, transmitted, or stored on a server we control.</p>
+        <p>There is no Ki account. There is no Ki backend. There is no analytics SDK, no crash-reporting SDK that captures content, no advertising SDK, no attribution SDK, and no third-party tracking SDK in the app. We have not embedded any code that reports your activity to us or to a partner.</p>
+
+        <h2>What stays on your iPhone</h2>
+        <p>Some information is stored only on your iPhone, in the app's protected sandbox, and is never transmitted to us:</p>
+        <ul>
+            <li>Your bookmarks</li>
+            <li>Your browsing history</li>
+            <li>Open tabs</li>
+            <li>Per-site privacy decisions you make in the address-bar shield</li>
+            <li>Privacy profile preferences</li>
+            <li>Default search engine choice</li>
+        </ul>
+        <p>If you delete the app, all of this data is removed by iOS along with the app.</p>
+
+        <h2>Network traffic Ki initiates</h2>
+        <p>Ki is a web browser, so it makes network requests that you direct it to make:</p>
+        <ol>
+            <li><strong>Web pages.</strong> When you navigate to a URL, Ki requests that URL. The request is sent directly from your iPhone to that website. We are not in the middle. The site you visit will see your IP address and any information their page collects, the same as in any other browser. Their privacy policy applies to that traffic.</li>
+            <li><strong>Search.</strong> When you type a search query, Ki sends it to whatever search engine you have chosen in Settings. We are not in the middle. The search engine's privacy policy applies.</li>
+            <li><strong>Optional Mac pairing.</strong> If you opt in to Mac pairing in Settings, your iPhone advertises itself on your local Wi-Fi network using Bonjour and accepts connections from a paired Mac running the Ki Mac-side tool. This traffic stays on your local network. It does not go to us. It does not go to the internet.</li>
+            <li><strong>Optional bring-your-own-key (BYOK) AI providers.</strong> If you paste your own API key for a third-party AI provider in Settings, requests originated by features that use it go directly from your device to the provider you chose, using your key. We do not proxy or store the request, and we cannot read the key — it is held in your iPhone's Keychain. The provider's privacy policy applies to that traffic.</li>
+        </ol>
+
+        <h2>Permissions Ki may request</h2>
+        <p>Ki uses the iPhone's standard permission prompts when, and only when, it needs them. We currently use:</p>
+        <ul>
+            <li><strong>Local Network.</strong> Requested only if you opt in to Mac pairing. Used to advertise the iPhone over Bonjour on your local Wi-Fi.</li>
+        </ul>
+        <p>Ki does not request the following: Camera, Microphone, Location, Contacts, Photos, HealthKit, Bluetooth, Motion, Reminders, Calendar, or the iOS advertising identifier (IDFA).</p>
+
+        <h2>Cookies and trackers in the browser itself</h2>
+        <p>Ki blocks known cross-site trackers by default using iOS's built-in content-blocker mechanism (WKContentRuleList). You can adjust the policy per site by tapping the shield icon in the address bar.</p>
+        <p>Cookies a site sets are stored in the system web view's data store, scoped to that site, and isolated to the privacy profile you are using. You can clear them at any time from Settings.</p>
+
+        <h2>Data we sell or share</h2>
+        <p>None. We have no data to sell, because we collect none.</p>
+
+        <h2>Children</h2>
+        <p>Ki is rated 17+ on the App Store because it offers unrestricted access to the web. It is not intended for users under 17.</p>
+
+        <h2>Changes to this policy</h2>
+        <p>If this policy changes, the "Last updated" date at the top will change and the new version will be published at this URL.</p>
+
+        <h2>Contact</h2>
+        <p>Questions or requests: <a href="mailto:blake@941apps.com">blake@941apps.com</a></p>
+    </div>
+</div>
+{% endblock %}

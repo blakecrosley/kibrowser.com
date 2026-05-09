@@ -1,0 +1,732 @@
+/* Ki Browser — design system
+ * Quiet, premium, on-brand. The page itself should feel like a deep breath.
+ * Plain CSS. No build step. */
+
+/* ─── Tokens ─────────────────────────────────────────────────────────── */
+
+:root {
+    --ki-ink: #0B1020;
+    --ki-ink-soft: #1B2238;
+    --ki-paper: #FCFCFD;
+    --ki-paper-soft: #F4F5F8;
+    --ki-surface: #FFFFFF;
+    --ki-muted: #5B6175;
+    --ki-muted-soft: #8B92A8;
+    --ki-border: #E4E6EC;
+    --ki-border-soft: #EFF1F5;
+    --ki-accent: #4F46E5;
+    --ki-accent-hover: #3730A3;
+    --ki-accent-soft: #EEF0FE;
+    --ki-watermark: rgba(11, 16, 32, 0.04);
+    --ki-card-shadow: 0 1px 2px rgba(11, 16, 32, 0.04), 0 6px 24px rgba(11, 16, 32, 0.04);
+    --ki-card-shadow-hover: 0 1px 2px rgba(11, 16, 32, 0.05), 0 12px 36px rgba(11, 16, 32, 0.08);
+    --ki-icon-shadow: 0 1px 2px rgba(11, 16, 32, 0.06), 0 14px 48px rgba(11, 16, 32, 0.18);
+
+    /* Type stack. Serif for display copy (Apple's New York on Apple devices,
+     * graceful fallback to Georgia / Charter elsewhere); humanist sans for
+     * running body. Both are system-installed everywhere, no web fetches.
+     *
+     * The CJK fallbacks (Hiragino Mincho ProN, Yu Mincho) make sure the
+     * kanji 気 picks up Apple's serif Japanese (Mincho) — the cultural
+     * equivalent of New York — instead of falling through to the gothic
+     * Hiragino Sans default. Browsers walk the stack per-glyph: Latin uses
+     * New York; CJK skips the Latin-only fonts and lands on Mincho. */
+    --font-display: ui-serif, "New York", "Charter", "Iowan Old Style", Georgia, "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Times New Roman", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, sans-serif;
+
+    --bs-primary: var(--ki-accent);
+    --bs-body-bg: var(--ki-paper);
+    --bs-body-color: var(--ki-ink);
+    --bs-link-color: var(--ki-accent);
+    --bs-link-hover-color: var(--ki-accent-hover);
+    --bs-border-color: var(--ki-border);
+    --bs-border-color-translucent: var(--ki-border-soft);
+    --bs-body-font-family: var(--font-body);
+    --bs-font-sans-serif: var(--font-body);
+    --bs-font-serif: var(--font-display);
+    /* Bootstrap 5.3+ uses these for .text-muted, .text-secondary,
+     * .text-body-secondary, .text-body-tertiary, and .text-emphasis.
+     * Without these overrides those utilities ignore data-theme. */
+    --bs-secondary-color: var(--ki-muted);
+    --bs-tertiary-color: var(--ki-muted-soft);
+    --bs-secondary-bg: var(--ki-paper-soft);
+    --bs-tertiary-bg: var(--ki-paper-soft);
+    --bs-emphasis-color: var(--ki-ink);
+    --bs-heading-color: var(--ki-ink);
+}
+
+[data-theme="dark"] {
+    --ki-ink: #ECEFF7;
+    --ki-ink-soft: #C5C9DA;
+    --ki-paper: #07091A;
+    --ki-paper-soft: #0E1228;
+    --ki-surface: #11163A;
+    --ki-muted: #97A0BC;
+    --ki-muted-soft: #6F7795;
+    --ki-border: #1F2542;
+    --ki-border-soft: #181E37;
+    --ki-accent: #8B85FF;
+    --ki-accent-hover: #B7B2FF;
+    --ki-accent-soft: rgba(139, 133, 255, 0.12);
+    --ki-watermark: rgba(236, 239, 247, 0.04);
+    --ki-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 28px rgba(0, 0, 0, 0.35);
+    --ki-card-shadow-hover: 0 1px 2px rgba(0, 0, 0, 0.5), 0 16px 44px rgba(0, 0, 0, 0.5);
+    --ki-icon-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 18px 56px rgba(139, 133, 255, 0.25);
+
+    /* Re-point Bootstrap tokens for dark mode. */
+    --bs-body-bg: var(--ki-paper);
+    --bs-body-color: var(--ki-ink);
+    --bs-link-color: var(--ki-accent);
+    --bs-link-hover-color: var(--ki-accent-hover);
+    --bs-border-color: var(--ki-border);
+    --bs-border-color-translucent: var(--ki-border-soft);
+    --bs-secondary-color: var(--ki-muted);
+    --bs-tertiary-color: var(--ki-muted-soft);
+    --bs-secondary-bg: var(--ki-paper-soft);
+    --bs-tertiary-bg: var(--ki-paper-soft);
+    --bs-emphasis-color: var(--ki-ink);
+    --bs-heading-color: var(--ki-ink);
+}
+
+/* Belt-and-suspenders: a few Bootstrap utility classes still hardcode
+ * the secondary token at !important. Mirror them explicitly so the
+ * theme is never overridden, even if Bootstrap's load order shifts. */
+.text-muted,
+.text-secondary,
+.text-body-secondary {
+    color: var(--ki-muted) !important;
+}
+.text-body-tertiary {
+    color: var(--ki-muted-soft) !important;
+}
+
+/* Dark mode: Bootstrap's default <hr> renders too faintly. */
+hr {
+    border-color: var(--ki-border-soft);
+    opacity: 1;
+}
+
+/* Bootstrap's navbar-toggler-icon is a fixed dark SVG image and
+ * disappears against a dark navbar. Switch to a light one in dark mode. */
+[data-theme="dark"] .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%28236,239,247,0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+[data-theme="dark"] .navbar-toggler {
+    border-color: var(--ki-border);
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--ki-paper);
+    color: var(--ki-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1.55;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--ki-ink);
+    letter-spacing: -0.015em;
+    line-height: 1.12;
+    margin: 0;
+    font-weight: 600;
+}
+
+p { margin: 0; }
+
+a {
+    color: var(--ki-accent);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+a:hover { color: var(--ki-accent-hover); }
+
+.skip-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--ki-accent);
+    color: white;
+    padding: 0.75rem 1rem;
+    z-index: 9999;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ki-muted);
+    margin-bottom: 0.6rem;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.95rem, 3.6vw, 2.75rem);
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    line-height: 1.1;
+}
+
+.section-subtitle {
+    color: var(--ki-muted);
+    font-size: 1.1rem;
+    margin-top: 0.6rem;
+    max-width: 56ch;
+}
+
+.text-link {
+    color: var(--ki-muted);
+    font-weight: 500;
+    transition: color 0.15s;
+}
+.text-link:hover { color: var(--ki-ink); }
+
+/* ─── Navbar ────────────────────────────────────────────────────────── */
+
+.navbar {
+    background-color: rgba(252, 252, 253, 0.72);
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    border-bottom: 1px solid var(--ki-border-soft);
+    padding: 0.85rem 0;
+}
+[data-theme="dark"] .navbar {
+    background-color: rgba(7, 9, 26, 0.72);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 600;
+    color: var(--ki-ink);
+}
+.navbar-brand:hover { color: var(--ki-ink); }
+
+.brand-icon {
+    border-radius: 7px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.brand-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: -0.005em;
+    font-weight: 600;
+}
+
+.nav-link {
+    color: var(--ki-muted);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.9rem !important;
+    transition: color 0.15s;
+}
+.nav-link:hover { color: var(--ki-ink); }
+
+.theme-toggle {
+    background: transparent;
+    border: 1px solid var(--ki-border);
+    border-radius: 999px;
+    width: 38px;
+    height: 38px;
+    color: var(--ki-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+    padding: 0;
+}
+.theme-toggle:hover {
+    color: var(--ki-ink);
+    border-color: var(--ki-ink);
+    background-color: var(--ki-paper-soft);
+}
+
+.theme-icon { display: none; }
+[data-theme="light"] .theme-icon--moon { display: inline-block; }
+[data-theme="dark"] .theme-icon--sun { display: inline-block; }
+
+/* ─── Hero ──────────────────────────────────────────────────────────── */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 0 5rem;
+    background: linear-gradient(180deg, var(--ki-paper) 0%, var(--ki-paper-soft) 100%);
+    border-bottom: 1px solid var(--ki-border-soft);
+}
+
+.hero-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: clamp(28rem, 60vw, 48rem);
+    line-height: 1;
+    color: var(--ki-watermark);
+    font-weight: 300;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+.hero-container {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: center;
+}
+
+.hero-copy {
+    max-width: 36rem;
+}
+
+.badge-beta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--ki-accent-soft);
+    color: var(--ki-accent);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.32rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.4rem;
+}
+.badge-beta::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ki-accent);
+    box-shadow: 0 0 0 4px var(--ki-accent-soft);
+}
+
+.hero-wordmark {
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 15vw, 10.5rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+    margin-bottom: 1.4rem;
+    background: linear-gradient(135deg, var(--ki-ink) 0%, var(--ki-ink-soft) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-lead {
+    font-family: var(--font-display);
+    font-size: clamp(1.55rem, 2.6vw, 1.95rem);
+    font-weight: 500;
+    color: var(--ki-ink);
+    letter-spacing: -0.012em;
+    margin-bottom: 0.85rem;
+    line-height: 1.25;
+}
+
+.hero-sub {
+    font-size: 1.1rem;
+    color: var(--ki-muted);
+    margin-bottom: 1.6rem;
+    max-width: 36rem;
+}
+
+.hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 2rem;
+}
+
+.hero-pill {
+    background: var(--ki-surface);
+    border: 1px solid var(--ki-border);
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.85rem;
+    color: var(--ki-muted);
+    font-weight: 500;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.app-store-link { display: inline-flex; }
+
+.app-store-badge {
+    height: 50px;
+    transition: transform 0.15s, opacity 0.15s;
+}
+.app-store-badge:hover { opacity: 0.88; transform: translateY(-1px); }
+
+[data-theme="dark"] .app-store-badge {
+    filter: invert(1);
+}
+
+.hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-icon-frame {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hero-icon-frame::before {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle at center, var(--ki-accent-soft) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.hero-icon {
+    position: relative;
+    z-index: 1;
+    border-radius: 28%;
+    box-shadow: var(--ki-icon-shadow);
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@media (max-width: 880px) {
+    .hero { padding: 4rem 0 3rem; }
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+    .hero-copy { max-width: none; margin: 0 auto; }
+    .hero-pills { justify-content: center; }
+    .hero-actions { justify-content: center; }
+    .hero-icon-frame { width: 200px; height: 200px; }
+    .hero-icon { width: 180px !important; height: 180px !important; }
+}
+
+/* ─── Principle section ─────────────────────────────────────────────── */
+
+.principle {
+    padding: 6rem 0;
+}
+
+.principle-intro {
+    text-align: center;
+    max-width: 56ch;
+    margin: 0 auto 3.5rem;
+}
+.principle-intro .section-subtitle { margin-left: auto; margin-right: auto; }
+
+.principle-row { row-gap: 2rem; }
+
+.principle-card {
+    height: 100%;
+    background: transparent;
+    padding: 1.5rem 1rem 0;
+    text-align: center;
+}
+
+.principle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--ki-accent-soft);
+    color: var(--ki-accent);
+    margin-bottom: 1.2rem;
+}
+
+.principle-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.012em;
+}
+
+.principle-card p {
+    color: var(--ki-muted);
+    font-size: 0.98rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 880px) {
+    .principle { padding: 4rem 0; }
+}
+
+/* ─── Features ──────────────────────────────────────────────────────── */
+
+.features {
+    padding: 6rem 0;
+    background: var(--ki-paper-soft);
+    border-top: 1px solid var(--ki-border-soft);
+    border-bottom: 1px solid var(--ki-border-soft);
+}
+
+.features-intro {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.feature-card {
+    height: 100%;
+    background: var(--ki-surface);
+    border: 1px solid var(--ki-border-soft);
+    border-radius: 20px;
+    padding: 1.75rem;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    box-shadow: var(--ki-card-shadow);
+}
+.feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ki-card-shadow-hover);
+    border-color: var(--ki-border);
+}
+
+.feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--ki-accent-soft);
+    color: var(--ki-accent);
+    margin-bottom: 1.2rem;
+}
+
+.feature-card h5 {
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+    color: var(--ki-ink);
+}
+
+.feature-card p {
+    color: var(--ki-muted);
+    font-size: 0.96rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 880px) {
+    .features { padding: 4rem 0; }
+}
+
+/* ─── CTA ───────────────────────────────────────────────────────────── */
+
+.cta {
+    padding: 6rem 0;
+    text-align: center;
+}
+
+.cta-card {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--ki-surface);
+    border: 1px solid var(--ki-border);
+    border-radius: 28px;
+    padding: 3.5rem 2.5rem;
+    box-shadow: var(--ki-card-shadow);
+    position: relative;
+    overflow: hidden;
+}
+.cta-card::before {
+    content: "気";
+    position: absolute;
+    top: -3rem;
+    right: -3rem;
+    font-family: var(--font-display);
+    font-size: 22rem;
+    line-height: 1;
+    color: var(--ki-watermark);
+    font-weight: 300;
+    pointer-events: none;
+    user-select: none;
+}
+
+.cta-card .section-title {
+    margin-bottom: 1rem;
+}
+
+.cta-lead {
+    color: var(--ki-muted);
+    font-size: 1.08rem;
+    margin-bottom: 2rem;
+    max-width: 48ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 880px) {
+    .cta { padding: 4rem 0; }
+    .cta-card { padding: 2.5rem 1.5rem; }
+    .cta-card::before { font-size: 14rem; top: -1.5rem; right: -1.5rem; }
+}
+
+/* ─── Long-form pages (privacy, support) ────────────────────────────── */
+
+.legal-content,
+.support-content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 0 5rem;
+    line-height: 1.7;
+}
+
+.legal-content h1,
+.support-content h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4.4vw, 3.2rem);
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.02em;
+}
+
+.legal-content h2,
+.support-content h2 {
+    font-family: var(--font-display);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-size: 1.55rem;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+}
+
+.legal-content p,
+.legal-content ul,
+.legal-content ol,
+.support-content p {
+    color: var(--ki-ink);
+    font-size: 1.02rem;
+}
+
+.legal-content ul,
+.legal-content ol { padding-left: 1.5rem; }
+.legal-content li { margin-bottom: 0.5rem; }
+.legal-content p { margin-bottom: 1rem; }
+
+.last-updated {
+    color: var(--ki-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2.5rem !important;
+}
+
+.highlight-box {
+    background-color: var(--ki-accent-soft);
+    border-left: 3px solid var(--ki-accent);
+    padding: 1.1rem 1.4rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    color: var(--ki-ink);
+    line-height: 1.6;
+}
+
+/* Support */
+.contact-box {
+    background: var(--ki-paper-soft);
+    border: 1px solid var(--ki-border-soft);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 3.5rem;
+    text-align: center;
+}
+.contact-box h2 {
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.faq-item {
+    border-bottom: 1px solid var(--ki-border-soft);
+    padding: 1.5rem 0;
+}
+.faq-item:last-child { border-bottom: none; }
+.faq-question {
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--ki-ink);
+    font-size: 1.15rem;
+    letter-spacing: -0.008em;
+}
+.faq-answer {
+    color: var(--ki-muted);
+    margin-bottom: 0;
+}
+
+/* ─── Footer ────────────────────────────────────────────────────────── */
+
+.footer {
+    background-color: var(--ki-paper-soft);
+    border-top: 1px solid var(--ki-border-soft);
+    padding: 3.5rem 0 2.5rem;
+    margin-top: 0;
+    color: var(--ki-muted);
+}
+.footer h6 {
+    color: var(--ki-ink);
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: 0.01em;
+}
+.footer a {
+    color: var(--ki-muted);
+    transition: color 0.15s;
+    font-size: 0.95rem;
+}
+.footer a:hover {
+    color: var(--ki-ink);
+    text-decoration: none;
+}
+.footer hr {
+    border-color: var(--ki-border-soft);
+    opacity: 1;
+    margin: 2rem 0 1.5rem;
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0s !important;
+        transition-duration: 0s !important;
+    }
+}

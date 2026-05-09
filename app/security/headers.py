@@ -1,0 +1,185 @@
+"""
+Plus Ultra Security Headers Module
+
+Implements hardened security headers for A+ ratings on:
+- SecurityHeaders.com
+- Mozilla Observatory
+
+Headers implemented:
+- Strict-Transport-Security (HSTS)
+- Content-Security-Policy (CSP)
+- X-Content-Type-Options
+- X-Frame-Options
+- X-XSS-Protection (legacy, but still useful)
+- Referrer-Policy
+- Permissions-Policy (comprehensive deny list)
+- Cross-Origin-Opener-Policy (COOP)
+- Cross-Origin-Resource-Policy (CORP) - for API endpoints only
+"""
+
+from fastapi import Request
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
+
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """Add hardened security headers to all responses.
+
+    This middleware implements Plus Ultra security headers for maximum
+    protection while maintaining compatibility with CDN-loaded resources.
+    """
+
+    # Comprehensive Permissions-Policy denying all unused features
+    PERMISSIONS_POLICY = ", ".join([
+        "accelerometer=()",
+        "ambient-light-sensor=()",
+        "autoplay=()",
+        "battery=()",
+        "camera=()",
+        "cross-origin-isolated=()",
+        "display-capture=()",
+        "document-domain=()",
+        "encrypted-media=()",
+        "execution-while-not-rendered=()",
+        "execution-while-out-of-viewport=()",
+        "fullscreen=()",
+        "geolocation=()",
+        "gyroscope=()",
+        "keyboard-map=()",
+        "magnetometer=()",
+        "microphone=()",
+        "midi=()",
+        "navigation-override=()",
+        "payment=()",
+        "picture-in-picture=()",
+        "publickey-credentials-get=()",
+        "screen-wake-lock=()",
+        "sync-xhr=()",
+        "usb=()",
+        "web-share=()",
+        "xr-spatial-tracking=()",
+    ])
+
+    # Content Security Policy for sites using CDN resources
+    # Note: upgrade-insecure-requests is added dynamically (not on localhost)
+    CSP_DIRECTIVES = {
+        "default-src": "'self'",
+        "script-src": "'self' 'unsafe-inline' https://cdn.jsdelivr.net",
+        "style-src": "'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com",
+        "font-src": "'self' https://cdn.jsdelivr.net https://fonts.gstatic.com",
+        "img-src": "'self' https://developer.apple.com data:",
+        "connect-src": "'self'",
+        "media-src": "'self'",
+        "frame-ancestors": "'none'",
+        "base-uri": "'self'",
+        "form-action": "'self'",
+    }
+
+    def __init__(self, app, csp_overrides: dict | None = None):
+        """Initialize with optional CSP directive overrides.
+
+        Args:
+            app: The ASGI application
+            csp_overrides: Optional dict to override default CSP directives
+        """
+        super().__init__(app)
+        self.csp_overrides = csp_overrides or {}
+
+    def _build_csp(self, is_localhost: bool) -> str:
+        """Build CSP string, optionally including upgrade-insecure-requests."""
+        directives = {**self.CSP_DIRECTIVES, **self.csp_overrides}
+
+        # Only upgrade to HTTPS in production (not localhost)
+        if not is_localhost:
+            directives["upgrade-insecure-requests"] = ""
+
+        return "; ".join(
+            f"{key} {value}".strip() if value else key
+            for key, value in directives.items()
+        )
+
+    async def dispatch(self, request: Request, call_next) -> Response:
+        response = await call_next(request)
+
+        # Check if localhost (skip certain security headers for local dev)
+        # Also treat .local/.test domains as local development (for Caddy reverse proxy)
+        hostname = request.url.hostname or ""
+        is_localhost = hostname in ("localhost", "127.0.0.1") or hostname.endswith(".local") or hostname.endswith(".test")
+
+        # === Core Security Headers ===
+
+        # Prevent MIME type sniffing
+        response.headers["X-Content-Type-Options"] = "nosniff"
+
+        # Prevent clickjacking
+        response.headers["X-Frame-Options"] = "DENY"
+
+        # Legacy XSS protection (modern browsers use CSP, but older ones need this)
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+
+        # Control referrer information leakage
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+
+        # === Transport Security ===
+
+        # Enforce HTTPS for 1 year, include subdomains (production only)
+        if not is_localhost:
+            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+
+        # === Cross-Origin Policies ===
+
+        # Prevent other sites from opening this site in a popup and accessing window.opener
+        response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+
+        # Note: Cross-Origin-Embedder-Policy (COEP) is intentionally NOT set
+        # because it requires all CDN resources to have CORP headers, which
+        # most CDNs (jsdelivr, unpkg, etc.) don't provide.
+
+        # === Content Security Policy ===
+        response.headers["Content-Security-Policy"] = self._build_csp(is_localhost)
+
+        # === Feature/Permissions Policy ===
+        # Comprehensive deny list for browser features we don't use
+        response.headers["Permissions-Policy"] = self.PERMISSIONS_POLICY
+
+        # === Cache Headers for Static Assets ===
+        if request.url.path.startswith("/static/"):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+            # Add CORP for static assets (safe since they're self-hosted)
+            response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+
+        # === Early Hints: Link preload for critical resources ===
+        content_type = response.headers.get("content-type", "")
+        if "text/html" in content_type:
+            preload_links = getattr(request.app.state, "preload_links", [])
+            if preload_links:
+                response.headers["Link"] = ", ".join(preload_links)
+
+        # === CDN Cache Safety ===
+
+        # Mutation methods must never be cached at the edge
+        if request.method in ("POST", "PUT", "DELETE", "PATCH"):
+            response.headers["Cache-Control"] = "no-store"
+
+        return response
+
+
+class APISecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """Stricter security headers for API-only endpoints.
+
+    This middleware adds Cross-Origin-Resource-Policy: same-origin
+    to all responses, which is safe for API endpoints that don't
+    serve resources to cross-origin contexts.
+    """
+
+    async def dispatch(self, request: Request, call_next) -> Response:
+        response = await call_next(request)
+
+        # API responses should not be embeddable cross-origin
+        response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+
+        # API responses typically don't need caching
+        if "Cache-Control" not in response.headers:
+            response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+
+        return response

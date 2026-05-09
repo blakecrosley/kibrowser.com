@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Ki Browser{% endblock %} | A private browser for iPhone</title>
+    <meta name="description" content="{% block description %}Ki is a private web browser for iPhone. Trackers blocked by default. Per-site control over cookies and scripts. No accounts, no telemetry.{% endblock %}">
+    <meta name="theme-color" content="#0B1020" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#FCFCFD" media="(prefers-color-scheme: light)">
+
+    <link rel="canonical" href="https://kibrowser.com{% block canonical %}{{ request.url.path }}{% endblock %}">
+
+    <!-- Theme-init: runs synchronously to set data-theme before paint, no FOUC.
+         Falls back to system preference when no saved theme exists. -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('theme');
+                var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var theme = saved || (systemDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://kibrowser.com/#organization",
+        "name": "941 Apps, LLC",
+        "url": "https://kibrowser.com",
+        "logo": "https://kibrowser.com/static/images/app-icon.png",
+        "description": "Maker of Ki, a private web browser for iPhone.",
+        "sameAs": [
+            "https://blakecrosley.com",
+            "https://941apps.com"
+        ]
+    }
+    </script>
+
+    <!-- WebSite Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://kibrowser.com/#website",
+        "name": "Ki Browser",
+        "url": "https://kibrowser.com",
+        "description": "A private web browser for iPhone.",
+        "publisher": {
+            "@id": "https://kibrowser.com/#organization"
+        }
+    }
+    </script>
+
+    <!-- SoftwareApplication Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MobileApplication",
+        "name": "Ki",
+        "description": "A private web browser for iPhone. Trackers blocked by default. Per-site control over cookies and scripts.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "iOS",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/PreOrder"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "941 Apps, LLC",
+            "@id": "https://kibrowser.com/#organization"
+        },
+        "url": "https://kibrowser.com",
+        "featureList": [
+            "Cross-site tracker blocking by default",
+            "Per-site privacy controls",
+            "Privacy profiles with separate cookie jars",
+            "On-device bookmarks and history",
+            "No account, no telemetry, no ads"
+        ],
+        "keywords": "private browser, iPhone, privacy, tracker blocker, no telemetry"
+    }
+    </script>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kibrowser.com{{ request.url.path }}">
+    <meta property="og:title" content="{% block og_title %}Ki Browser | A private browser for iPhone{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Trackers blocked by default. Per-site control. No accounts, no telemetry, no ads.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://kibrowser.com/static/images/app-icon.png{% endblock %}">
+    <meta property="og:site_name" content="Ki Browser">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ki Browser | A private browser for iPhone">
+    <meta name="twitter:description" content="Trackers blocked by default. Per-site control. No accounts, no telemetry, no ads.">
+    <meta name="twitter:image" content="https://kibrowser.com/static/images/app-icon.png">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', path='images/app-icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', path='images/app-icon.png') }}">
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <a href="#main-content" class="skip-link visually-hidden-focusable">Skip to main content</a>
+
+    {% include "components/navbar.html" %}
+
+    <main id="main-content" class="flex-grow-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "components/footer.html" %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <script src="{{ asset('js/theme.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Support{% endblock %}
+{% block description %}Get help with Ki — a private web browser for iPhone. FAQ and contact information.{% endblock %}
+
+{% block head %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "Is Ki free?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The beta is free. Ki may add an optional paid tier later for advanced features. The browser itself will remain free."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Does Ki have an account?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. There is no sign-in. Your bookmarks, history, and settings stay on your iPhone."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Why is a site behaving strangely?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ki blocks known cross-site trackers by default. Some sites depend on third-party scripts and may break under default policy. Tap the shield icon in the address bar to see what's blocked and adjust the policy for that site."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "How do I clear my history?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Settings → Privacy Profile → Clear data. You can clear cookies, history, or both."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Is Ki a default browser?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Not yet. The iOS Default Browser Entitlement is granted by Apple separately. Ki is not yet on that list."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "What does Ki mean?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ki (気) is the Japanese word for breath, energy, and presence. It is the kanji on the app icon."
+            }
+        }
+    ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="support-content">
+        <h1 class="text-center mb-5">Support</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="contact-box text-center">
+                    <h2>Contact</h2>
+                    <p>Have a question or need help? Email us at:</p>
+                    <p style="font-size: 1.4rem;"><a href="mailto:blake@941apps.com">blake@941apps.com</a></p>
+                    <p class="text-muted small mb-0">We read every message. Beta testers in particular: please send screenshots of anything that breaks. We typically respond within 24–48 hours.</p>
+                </div>
+
+                <h2 class="mb-4">Common questions</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">Is Ki free?</div>
+                    <p class="faq-answer">Yes. The beta is free. Ki may add an optional paid tier later for advanced features. The browser itself will remain free.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Does Ki have an account?</div>
+                    <p class="faq-answer">No. There is no sign-in. Your bookmarks, history, and settings stay on your iPhone.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Why is a site behaving strangely?</div>
+                    <p class="faq-answer">Ki blocks known cross-site trackers by default. Some sites depend on third-party scripts and may break under default policy. Tap the shield icon in the address bar to see what's blocked and adjust the policy for that site.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How do I clear my history?</div>
+                    <p class="faq-answer">Settings → Privacy Profile → Clear data. You can clear cookies, history, or both.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I import bookmarks from Safari?</div>
+                    <p class="faq-answer">Bookmark import is on the roadmap. For now, you can re-add them manually.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Is Ki a default browser?</div>
+                    <p class="faq-answer">Not yet. The iOS Default Browser Entitlement is granted by Apple separately. Ki is not yet on that list.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What does "Ki" mean?</div>
+                    <p class="faq-answer">"Ki" (気) is the Japanese word for breath, energy, and presence. It is the kanji on the app icon.</p>
+                </div>
+
+                <h2 class="mb-3 mt-5">Reporting a privacy concern</h2>
+                <p>Email <a href="mailto:blake@941apps.com">blake@941apps.com</a> with "Privacy" in the subject. We respond within two business days.</p>
+
+                <h2 class="mb-3 mt-5">Reporting a security issue</h2>
+                <p>If you believe you have found a security issue in Ki, please email <a href="mailto:blake@941apps.com">blake@941apps.com</a> with "Security" in the subject. Please describe the issue and how to reproduce it. Do not publish the issue publicly until we have had a chance to fix it.</p>
+
+                <h2 class="mb-3 mt-5">TestFlight feedback</h2>
+                <p>In the TestFlight app, take a screenshot, tap and hold, and choose <strong>Share Beta Feedback</strong>. We get the screenshot and your message together.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

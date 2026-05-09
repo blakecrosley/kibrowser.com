@@ -1,0 +1,101 @@
+# Ki Browser — Complete Documentation
+
+> A private web browser for iPhone. Built around the user, not the advertiser.
+
+For the summary, see: [llms.txt](https://kibrowser.com/llms.txt)
+
+## Product Overview
+
+Ki is a privacy-first web browser for iPhone. The product principle is that a browser should stay out of your way: trackers do not load, no analytics SDK reports your activity, and there is no Ki account or backend. Bookmarks, history, tabs, and per-site settings live only on the device.
+
+## Core Features
+
+### Tracker blocking (default-on)
+- Built on iOS's WKContentRuleList content-blocker mechanism.
+- Blocks known cross-site trackers and ad networks before they load.
+- No SDK touches the page; rules are bundled with the app.
+
+### Per-site privacy controls
+- Tap the shield in the address bar to grant or revoke any permission for that origin.
+- Decisions are remembered until the user changes them.
+- Per-origin toggles include cookies, scripts, autoplay, popups, microphone, and camera.
+
+### Privacy profiles
+- Multiple independent profiles — research, shopping, personal — each with its own cookie jar, history, and bookmarks.
+- Switch between them in Settings.
+- "Reset this profile" removes a profile's tracked state so a returning visit looks new to a site.
+
+### Reader mode
+- Strip a page down to text and images for sites that fight you.
+
+### Search
+- User chooses the default search engine in Settings.
+
+### On-device by default
+- Bookmarks, history, tabs, downloads, and per-site permissions are stored only on the user's iPhone.
+- No iCloud sync in v1 (under consideration).
+- Deleting the app removes all of this data via the standard iOS sandbox.
+
+### Optional Mac pairing (developer feature)
+- Off by default. Surfaces in Settings → Mac pairing.
+- Lets a paired Mac on the same Wi-Fi network read pages and run navigation commands on the iPhone.
+- Useful for building or testing websites — comparable in spirit to Safari's Web Inspector flow, where Mac Safari attaches to iPhone Safari for inspection.
+- Each paired Mac gets its own secret stored in the iPhone's Keychain.
+- Forgetting all paired Macs rotates the security identity.
+
+### Bring Your Own Key (BYOK) for AI providers
+- Optional. Surfaces in Settings → BYOK.
+- The user pastes their own API key for a third-party AI provider (e.g., Anthropic, OpenAI).
+- Keys live in the iPhone's Keychain only. They do not sync.
+- Requests go directly from the user's device to the provider chosen by the user.
+
+## What Ki Does Not Do
+
+- No account. No sign-up.
+- No analytics SDK. No advertising SDK. No attribution SDK. No third-party tracking SDK.
+- No ads.
+- No telemetry to a Ki backend (there is no Ki backend).
+- No data sale.
+- No camera, microphone, location, contacts, photos, HealthKit, Bluetooth, or motion access requested.
+- No iOS advertising identifier (IDFA) requested.
+
+## Platform & Technical Details
+
+- iPhone-only at launch (iPad and Mac under consideration post-1.0).
+- iOS 18+ deployment target.
+- Built with WKWebView, SwiftUI, SwiftData.
+- App Privacy: Data Not Collected.
+- Age rating: 17+ (Unrestricted Web Access).
+- Encryption: standard iOS HTTPS only; ITSAppUsesNonExemptEncryption is declared as false.
+
+## Web Marketing Site
+
+- FastAPI + Jinja2 + Bootstrap 5
+- Hosted on Railway
+- DNS via Cloudflare
+- AIO-compliant: llms.txt, robots.txt welcoming AI crawlers, JSON-LD schema for Organization / WebSite / MobileApplication / FAQPage
+
+## Target Audience
+
+- Privacy-conscious iPhone users tired of trackers.
+- Web developers who want a sandboxed inspect-and-debug environment paired to their Mac.
+- People who simply want a quieter browser that doesn't fight them for attention.
+
+## Coming Soon (post-1.0)
+
+- Default Browser Entitlement (separate Apple grant; submitted post-launch).
+- Safari Web Extension target so Ki's privacy rules can apply inside Safari too.
+- iCloud bookmark sync (under consideration).
+
+## Contact
+
+- Website: https://kibrowser.com
+- Privacy: https://kibrowser.com/privacy
+- Support: https://kibrowser.com/support
+- Email: blake@941apps.com
+- Developer: Blake Crosley
+
+## Related Resources
+
+- Privacy Policy: https://kibrowser.com/privacy
+- Support: https://kibrowser.com/support

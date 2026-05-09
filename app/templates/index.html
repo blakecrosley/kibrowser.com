@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Ki Browser{% endblock %}
+{% block description %}Ki is a private web browser for iPhone. Trackers blocked by default. Per-site control over cookies and scripts. No accounts, no telemetry, no ads.{% endblock %}
+
+{% block content %}
+{% include "components/hero.html" %}
+{% include "components/principle.html" %}
+{% include "components/features.html" %}
+
+<section class="cta">
+    <div class="container">
+        <div class="cta-card">
+            <p class="eyebrow">Now in beta</p>
+            <h2 class="section-title">Try Ki on your iPhone.</h2>
+            <p class="cta-lead">Ki is currently in TestFlight. Email <a href="mailto:blake@941apps.com?subject=Ki%20TestFlight">blake@941apps.com</a> to request an invite.</p>
+            <a href="#" target="_blank" title="Coming soon to TestFlight">
+                <img
+                    src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                    alt="Download on the App Store — Coming soon"
+                    class="app-store-badge"
+                >
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
