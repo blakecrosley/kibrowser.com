@@ -7,7 +7,7 @@
 <div class="container">
     <div class="legal-content">
         <h1>Privacy Policy</h1>
-        <p class="last-updated">Effective: 2026-05-07 · Last updated: 2026-05-07</p>
+        <p class="last-updated">Effective: 2026-05-07 · Last updated: 2026-05-12</p>
 
         <p>Ki is a web browser for iPhone, made by Blake Crosley. This policy describes what data Ki collects from you. The short version: Ki collects nothing from you and sends nothing about you anywhere.</p>
 
@@ -41,11 +41,14 @@
         </ol>
 
         <h2>Permissions Ki may request</h2>
-        <p>Ki uses the iPhone's standard permission prompts when, and only when, it needs them. We currently use:</p>
+        <p>Ki uses the iPhone's standard permission prompts when, and only when, the page you are browsing needs them, and only when you have first enabled that permission for that site through the address-bar shield. We currently use:</p>
         <ul>
-            <li><strong>Local Network.</strong> Requested only if you opt in to Mac pairing. Used to advertise the iPhone over Bonjour on your local Wi-Fi.</li>
+            <li><strong>Local Network.</strong> Requested only if you opt in to Mac pairing in Settings. Used to advertise the iPhone over Bonjour on your local Wi-Fi.</li>
+            <li><strong>Camera.</strong> Requested only when a web page calls <code>getUserMedia</code> for video AND you have enabled Camera for that site in the address-bar shield. Default is block, so the iOS prompt does not appear until you explicitly enable the toggle. Flipping the toggle off while a camera stream is active immediately stops the stream.</li>
+            <li><strong>Microphone.</strong> Same posture as Camera, for <code>getUserMedia</code> audio requests.</li>
         </ul>
-        <p>Ki does not request the following: Camera, Microphone, Location, Contacts, Photos, HealthKit, Bluetooth, Motion, Reminders, Calendar, or the iOS advertising identifier (IDFA).</p>
+        <p>Permission requests come from web pages, not from Ki itself. Ki gates each request based on your per-site policy in the shield.</p>
+        <p>Ki does not request the following: Location, Contacts, Photos, HealthKit, Bluetooth, Motion, Reminders, Calendar, or the iOS advertising identifier (IDFA).</p>
 
         <h2>Cookies and trackers in the browser itself</h2>
         <p>Ki blocks known cross-site trackers by default using iOS's built-in content-blocker mechanism (WKContentRuleList). You can adjust the policy per site by tapping the shield icon in the address bar.</p>

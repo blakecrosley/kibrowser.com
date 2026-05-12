@@ -35,6 +35,30 @@
         },
         {
             "@type": "Question",
+            "name": "What does the shield icon do?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The shield (left of the address-bar pill) opens a sheet of per-site permissions: third-party cookies, JavaScript, autoplay, pop-ups, microphone, camera. Flip any toggle to grant or revoke that permission for the current site. Decisions persist until you change them."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Why didn't the mic or camera prompt appear when I clicked Allow on a site?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ki blocks microphone and camera access by default. The iOS system prompt only fires after you enable the corresponding toggle for that site in the shield. Open the shield, flip Microphone or Camera on, then re-tap the site's allow button."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "What is reader mode?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "On articles and other content-heavy pages, a book icon appears in the URL bar. Tap it to view a stripped-down version of the page — text and images only, no scripts, no third-party assets. Tap the down chevron in the reader header to return to the live page."
+            }
+        },
+        {
+            "@type": "Question",
             "name": "How do I clear my history?",
             "acceptedAnswer": {
                 "@type": "Answer",
@@ -94,8 +118,33 @@
                 </div>
 
                 <div class="faq-item">
+                    <div class="faq-question">What does the shield icon do?</div>
+                    <p class="faq-answer">The shield (left of the address-bar pill) opens a sheet of per-site permissions: third-party cookies, JavaScript, autoplay, pop-ups, microphone, camera. Flip any toggle to grant or revoke that permission for the current site. Decisions persist until you change them. If a change needs a reload, the sheet shows a "Reload to apply" pill.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Why didn't the mic or camera prompt appear when I clicked Allow on a site?</div>
+                    <p class="faq-answer">Ki blocks microphone and camera access by default. The iOS system prompt only fires after you enable the corresponding toggle for that site in the shield. Open the shield, flip Microphone or Camera on, then re-tap the site's allow button.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What is reader mode?</div>
+                    <p class="faq-answer">On articles and other content-heavy pages, a book icon appears in the URL bar. Tap it to view a stripped-down version of the page — text and images only, no scripts, no third-party assets. Tap the down chevron in the reader header to return to the live page.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Why doesn't reader mode appear on some pages?</div>
+                    <p class="faq-answer">Reader mode is gated by Mozilla Readability's parseability heuristic — short pages, app shells, and very dynamic single-page apps may not qualify. If the icon doesn't show, the page isn't classified as long-form content.</p>
+                </div>
+
+                <div class="faq-item">
                     <div class="faq-question">How do I clear my history?</div>
                     <p class="faq-answer">Settings → Privacy Profile → Clear data. You can clear cookies, history, or both.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How do I reset per-site permissions?</div>
+                    <p class="faq-answer">Open the shield on any site, then toggle each permission back to its default — third-party cookies ON (blocked), JavaScript ON (allowed), the rest OFF. Toggling a permission back to its default removes the override entirely.</p>
                 </div>
 
                 <div class="faq-item">
