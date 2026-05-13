@@ -59,6 +59,22 @@
         },
         {
             "@type": "Question",
+            "name": "What does the on-device assistant do?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Long-press the URL bar to type a task in plain English. Ki plans one browser action at a time — navigate, click, type, scroll — and narrates each step as it runs. Apple Intelligence is the default brain on supported iPhones; bring your own Anthropic or OpenAI key on older devices via Settings → Assistant brain."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Where does my assistant prompt go?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Depends on the brain. Apple Intelligence runs entirely on this iPhone — nothing leaves the device. The cloud providers require explicit first-use consent and a key you paste in Settings; traffic goes directly from your iPhone to the provider you chose, never through a Ki server."
+            }
+        },
+        {
+            "@type": "Question",
             "name": "How do I clear my history?",
             "acceptedAnswer": {
                 "@type": "Answer",
@@ -135,6 +151,21 @@
                 <div class="faq-item">
                     <div class="faq-question">Why doesn't reader mode appear on some pages?</div>
                     <p class="faq-answer">Reader mode is gated by Mozilla Readability's parseability heuristic — short pages, app shells, and very dynamic single-page apps may not qualify. If the icon doesn't show, the page isn't classified as long-form content.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What does the on-device assistant do?</div>
+                    <p class="faq-answer">Long-press the URL bar to type a task in plain English ("find me an article about X", "open my email and tell me what's new"). Ki plans one browser action at a time — navigate, click, type, scroll — and narrates each step as it runs. Tap Stop anytime. Apple Intelligence is the default brain on supported iPhones; bring your own Anthropic or OpenAI key on older devices via Settings → Assistant brain.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Where does my assistant prompt go?</div>
+                    <p class="faq-answer">Depends on the brain you picked in Settings → Assistant brain. Apple Intelligence runs entirely on this iPhone — nothing leaves the device. The cloud providers (Anthropic, OpenAI, custom OpenAI-compatible) require explicit first-use consent and a key you paste in Settings; traffic goes directly from your iPhone to the provider you chose, never through a Ki server. A paired Mac stays on your local Wi-Fi.</p>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I turn the assistant off?</div>
+                    <p class="faq-answer">Yes — Settings → Assistant brain → tap any granted brain → Revoke consent. The long-press shortcut becomes a no-op once no brain has consent. You can also leave consent denied indefinitely and never see the assistant prompt.</p>
                 </div>
 
                 <div class="faq-item">

@@ -7,7 +7,7 @@
 <div class="container">
     <div class="legal-content">
         <h1>Privacy Policy</h1>
-        <p class="last-updated">Effective: 2026-05-07 · Last updated: 2026-05-12</p>
+        <p class="last-updated">Effective: 2026-05-07 · Last updated: 2026-05-13</p>
 
         <p>Ki is a web browser for iPhone, made by Blake Crosley. This policy describes what data Ki collects from you. The short version: Ki collects nothing from you and sends nothing about you anywhere.</p>
 
@@ -49,6 +49,15 @@
         </ul>
         <p>Permission requests come from web pages, not from Ki itself. Ki gates each request based on your per-site policy in the shield.</p>
         <p>Ki does not request the following: Location, Contacts, Photos, HealthKit, Bluetooth, Motion, Reminders, Calendar, or the iOS advertising identifier (IDFA).</p>
+
+        <h2 id="ai-assistant">AI assistance</h2>
+        <p>Ki has an on-device assistant you reach by long-pressing the URL bar. It plans the next browser action based on the goal you typed and a small snapshot of the current page (URL, title, visible elements). Where that information goes depends on which "brain" you pick in Settings → Assistant brain:</p>
+        <ul>
+            <li><strong>Apple Intelligence (default on supported iPhones).</strong> Runs on this iPhone. Nothing is sent off-device. The Apple Foundation Models framework processes your prompt locally.</li>
+            <li><strong>Anthropic / OpenAI / a custom OpenAI-compatible host (BYOK).</strong> You paste your own API key in Settings. The first time you use the brain Ki shows a consent modal naming the exact destination (e.g. <code>api.anthropic.com</code>) and what is sent. Traffic goes directly from your iPhone to the provider you chose, using your key. Ki does not proxy, log, or store the request body. The provider's privacy policy applies. You can revoke consent any time in Settings → Assistant brain.</li>
+            <li><strong>Paired Mac.</strong> If you've paired a Mac via the optional Mac companion, you can let it act as the brain. Traffic stays on your local Wi-Fi between the iPhone and the paired Mac — never to the internet.</li>
+        </ul>
+        <p>In every case, only your typed prompt, the current page's URL + title, a compact list of visible elements (selectors + labels), and the running action history are sent. No cookies, no browsing history, no full DOM, and no Keychain keys other than the one you provided. Per-brain consent state is stored locally on your iPhone.</p>
 
         <h2>Cookies and trackers in the browser itself</h2>
         <p>Ki blocks known cross-site trackers by default using iOS's built-in content-blocker mechanism (WKContentRuleList). You can adjust the policy per site by tapping the shield icon in the address bar.</p>
