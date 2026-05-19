@@ -1,3 +1,5 @@
+import json
+
 from fastapi import APIRouter, Request
 from fastapi.responses import PlainTextResponse, Response, RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
@@ -13,6 +15,12 @@ _asset_map = build_asset_map(APP_DIR / "static")
 templates.env.globals["asset"] = lambda path: make_asset_url(_asset_map, path)
 
 SITE_URL = "https://941ki.com"
+ASSOCIATED_APP_ID = "M4WTLM6RAQ.com.941apps.Ki"
+APPLE_APP_SITE_ASSOCIATION = {
+    "webcredentials": {
+        "apps": [ASSOCIATED_APP_ID],
+    },
+}
 
 
 @router.get("/robots.txt", response_class=PlainTextResponse)
@@ -198,3 +206,14 @@ Canonical: https://941ki.com/.well-known/security.txt
 # responsibly to blake@941apps.com. We aim to respond within 48 hours.
 """
     return PlainTextResponse(content=content.strip())
+
+
+@router.get("/.well-known/apple-app-site-association")
+@router.get("/apple-app-site-association")
+async def apple_app_site_association():
+    """Apple Passwords domain association for Ki's save-password flow."""
+    return Response(
+        content=json.dumps(APPLE_APP_SITE_ASSOCIATION, separators=(",", ":")),
+        media_type="application/json",
+        headers={"Cache-Control": "public, max-age=3600"},
+    )
