@@ -18,11 +18,14 @@ Marketing + privacy/support site for Ki, a private web browser for iPhone. Sibli
 - `/support` — Support page (mirrors `~/Projects/Shikigami/AppStore/policy/support.md`)
 - `/llms.txt`, `/llms-full.txt` — AIO context files
 - `/robots.txt`, `/sitemap.xml`, `/humans.txt`, `/.well-known/security.txt`
+- `/.well-known/apple-app-site-association`, `/apple-app-site-association` —
+  Apple Passwords `webcredentials` association for Ki (`com.941apps.Ki`)
 
 ## Commands
 
 - `./run.sh` — start dev server on port 8300
 - `pip install -r requirements.txt` — install dependencies
+- `.venv/bin/python -m unittest discover -s tests -v` — run route tests
 
 ## Deployment
 
