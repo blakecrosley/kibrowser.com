@@ -150,6 +150,12 @@ async def support(request: Request):
     return templates.TemplateResponse("support.html", {"request": request})
 
 
+@router.get("/apple-passwords-test")
+async def apple_passwords_test(request: Request):
+    """Test page for Ki's Apple Passwords save flow."""
+    return templates.TemplateResponse("apple-passwords-test.html", {"request": request})
+
+
 @router.get("/llms.txt")
 async def llms_txt():
     """AI context file per llmstxt.org specification."""

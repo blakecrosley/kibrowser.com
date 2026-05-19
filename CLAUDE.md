@@ -16,6 +16,7 @@ Marketing + privacy/support site for Ki, a private web browser for iPhone. Sibli
 - `/` — landing page (hero + features + CTA)
 - `/privacy` — Privacy Policy (mirrors `~/Projects/Shikigami/AppStore/policy/privacy-policy.md`)
 - `/support` — Support page (mirrors `~/Projects/Shikigami/AppStore/policy/support.md`)
+- `/apple-passwords-test` — noindex form page for Ki Apple Passwords save verification
 - `/llms.txt`, `/llms-full.txt` — AIO context files
 - `/robots.txt`, `/sitemap.xml`, `/humans.txt`, `/.well-known/security.txt`
 - `/.well-known/apple-app-site-association`, `/apple-app-site-association` —

@@ -42,5 +42,24 @@ class AppleAppSiteAssociationTests(unittest.TestCase):
         self.assertAppleAppSiteAssociationHead("/apple-app-site-association")
 
 
+class ApplePasswordsTestPageTests(unittest.TestCase):
+    def setUp(self):
+        self.client = TestClient(app)
+
+    def test_test_page_has_noindex_login_form(self):
+        response = self.client.get("/apple-passwords-test")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<meta name="robots" content="noindex, nofollow">', response.text)
+        self.assertIn('id="ki-test-username"', response.text)
+        self.assertIn('name="username"', response.text)
+        self.assertIn('autocomplete="username"', response.text)
+        self.assertIn('id="ki-test-password"', response.text)
+        self.assertIn('name="password"', response.text)
+        self.assertIn('type="password"', response.text)
+        self.assertIn('autocomplete="current-password"', response.text)
+        self.assertIn('Use non-sensitive test values only.', response.text)
+
+
 if __name__ == "__main__":
     unittest.main()
