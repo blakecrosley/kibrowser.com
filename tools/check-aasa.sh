@@ -7,6 +7,7 @@ PATHS=(
   "/.well-known/apple-app-site-association"
   "/apple-app-site-association"
 )
+TEST_PAGE_PATH="/apple-passwords-test"
 
 failures=0
 tmpdir="$(mktemp -d)"
@@ -70,9 +71,26 @@ for path in "${PATHS[@]}"; do
   check_path "${path}"
 done
 
-if [[ "${failures}" == 0 ]]; then
-  printf 'Apple app site association is ready at %s.\n' "${BASE_URL}"
+test_page_url="${BASE_URL%/}${TEST_PAGE_PATH}"
+test_page_body="${tmpdir}/apple-passwords-test.html"
+test_page_status="$(curl -sS -o "${test_page_body}" -w '%{http_code}' "${test_page_url}" || true)"
+if [[ "${test_page_status}" == "200" ]]; then
+  pass "${test_page_url} returned HTTP 200"
 else
-  printf 'Apple app site association is not ready at %s.\n' "${BASE_URL}"
+  fail "${test_page_url} returned HTTP ${test_page_status:-000}"
+fi
+
+if grep -q '<meta name="robots" content="noindex, nofollow">' "${test_page_body}" &&
+  grep -q 'autocomplete="username"' "${test_page_body}" &&
+  grep -q 'autocomplete="current-password"' "${test_page_body}"; then
+  pass "${test_page_url} exposes noindex Apple Passwords test form"
+else
+  fail "${test_page_url} does not expose the expected noindex test form"
+fi
+
+if [[ "${failures}" == 0 ]]; then
+  printf 'Apple app site association and password test page are ready at %s.\n' "${BASE_URL}"
+else
+  printf 'Apple app site association or password test page is not ready at %s.\n' "${BASE_URL}"
 fi
 exit "${failures}"
