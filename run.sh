@@ -8,6 +8,7 @@ VENV_DIR="$PROJECT_DIR/.venv"
 PID_FILE="$PROJECT_DIR/.server.pid"
 LOG_FILE="$PROJECT_DIR/.server.log"
 PORT=8300
+HEALTHCHECK_PATH="/apple-passwords-test"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -27,10 +28,14 @@ setup_venv() {
     fi
 }
 
+server_healthy() {
+    curl -fsS "http://127.0.0.1:$PORT$HEALTHCHECK_PATH" > /dev/null 2>&1
+}
+
 start_server() {
     if [ -f "$PID_FILE" ]; then
         PID=$(cat "$PID_FILE")
-        if ps -p $PID > /dev/null 2>&1; then
+        if ps -p "$PID" > /dev/null 2>&1; then
             echo -e "${YELLOW}Server is already running (PID: $PID)${NC}"
             return
         fi
@@ -39,27 +44,38 @@ start_server() {
     setup_venv
     echo -e "${GREEN}Starting development server on port $PORT...${NC}"
     cd "$PROJECT_DIR"
-    nohup uvicorn app.main:app --host 0.0.0.0 --port $PORT --reload > "$LOG_FILE" 2>&1 &
+    nohup uvicorn app.main:app --host 0.0.0.0 --port "$PORT" > "$LOG_FILE" 2>&1 &
     echo $! > "$PID_FILE"
-    sleep 2
 
     if [ -f "$PID_FILE" ]; then
         PID=$(cat "$PID_FILE")
-        if ps -p $PID > /dev/null 2>&1; then
-            echo -e "${GREEN}Server started! PID: $PID${NC}"
-            echo -e "${GREEN}Open http://localhost:$PORT${NC}"
-        else
-            echo -e "${RED}Failed to start server. Check logs with: ./run.sh logs${NC}"
+        for _ in {1..20}; do
+            if ! ps -p "$PID" > /dev/null 2>&1; then
+                break
+            fi
+            if server_healthy; then
+                echo -e "${GREEN}Server started! PID: $PID${NC}"
+                echo -e "${GREEN}Open http://localhost:$PORT${NC}"
+                return
+            fi
+            sleep 0.25
+        done
+
+        if ps -p "$PID" > /dev/null 2>&1; then
+            kill "$PID"
         fi
+        rm -f "$PID_FILE"
+        echo -e "${RED}Failed to start server. Check logs with: ./run.sh logs${NC}"
+        exit 1
     fi
 }
 
 stop_server() {
     if [ -f "$PID_FILE" ]; then
         PID=$(cat "$PID_FILE")
-        if ps -p $PID > /dev/null 2>&1; then
+        if ps -p "$PID" > /dev/null 2>&1; then
             echo -e "${YELLOW}Stopping server (PID: $PID)...${NC}"
-            kill $PID
+            kill "$PID"
             rm -f "$PID_FILE"
             echo -e "${GREEN}Server stopped.${NC}"
         else
@@ -74,8 +90,10 @@ stop_server() {
 status_server() {
     if [ -f "$PID_FILE" ]; then
         PID=$(cat "$PID_FILE")
-        if ps -p $PID > /dev/null 2>&1; then
+        if ps -p "$PID" > /dev/null 2>&1 && server_healthy; then
             echo -e "${GREEN}Server is running (PID: $PID) on port $PORT${NC}"
+        elif ps -p "$PID" > /dev/null 2>&1; then
+            echo -e "${RED}Server process exists but $HEALTHCHECK_PATH is not responding${NC}"
         else
             echo -e "${RED}Server is not running (stale PID file)${NC}"
             rm -f "$PID_FILE"
