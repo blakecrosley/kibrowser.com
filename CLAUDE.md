@@ -26,12 +26,18 @@ Marketing + privacy/support site for Ki, a private web browser for iPhone. Sibli
 - `./run.sh` — start dev server on port 8300
 - `pip install -r requirements.txt` — install dependencies
 - `.venv/bin/python -m unittest discover -s tests -v` — run route tests
+- `KI_AASA_BASE_URL=http://127.0.0.1:8300 tools/check-aasa.sh` — verify Apple
+  Passwords association locally; omit `KI_AASA_BASE_URL` after deploy to verify
+  `https://941ki.com`
 
 ## Deployment
 
 - Platform: Railway (git-push deploy from `main`)
 - Config: `railway.toml`, `Procfile`
 - DNS: Cloudflare CNAME → Railway custom domain target
+- After deployment, run `tools/check-aasa.sh` and confirm both AASA URLs return
+  HTTP 200, `application/json`, and
+  `M4WTLM6RAQ.com.941apps.Ki` in `webcredentials.apps`.
 
 ## Related Projects
 
