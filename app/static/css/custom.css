@@ -947,3 +947,16 @@ a:hover { color: var(--ki-accent-hover); }
     .ki-chip, .ki-blocked-pill { opacity: 1; transform: none; animation: none; }
     [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
+
+/* ============================================================
+   Dark-mode contrast (a11y)
+   Accent + accent-soft already flip in lockstep, so the brand
+   chips/pills are fine. Two edges: the skip-link (white on the
+   lightened accent #8B85FF = 3.04:1, shows on keyboard focus) and
+   the latent --ki-muted-soft token (3.96–4.47:1 if ever rendered).
+   ============================================================ */
+[data-theme="dark"] .skip-link {
+    background: var(--ki-accent-hover);
+    color: var(--ki-paper);
+}
+[data-theme="dark"] { --ki-muted-soft: #7E86A4; }
