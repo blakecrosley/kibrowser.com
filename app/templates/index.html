@@ -8,6 +8,100 @@
 {% include "components/principle.html" %}
 {% include "components/features.html" %}
 
+<!-- How it works: scroll-driven privacy walkthrough -->
+<section id="how" class="ki-how">
+    <div class="container">
+        <p class="ki-how__kicker" data-reveal>How Ki works</p>
+        <h2 class="ki-how__title" data-reveal style="--d:.08s">Private by default, yours to tune</h2>
+        <p class="ki-how__sub" data-reveal style="--d:.16s">No account, no setup, no dashboard to learn.
+            Open a page and Ki is already protecting you — then it hands you the dials if you want them.</p>
+
+        <div class="scrolly" data-step="1">
+            <div class="scrolly-grid">
+                <div class="scrolly-stage" aria-hidden="true">
+
+                    <!-- 01 · open any site -->
+                    <div class="stage-device stage-1">
+                        <div class="ki-browser">
+                            <div class="ki-browser__bar">
+                                <span class="ki-dot"></span><span class="ki-dot"></span><span class="ki-dot"></span>
+                                <span class="ki-url">apple.com/newsroom</span>
+                            </div>
+                            <div class="ki-browser__page">
+                                <span class="ki-skeleton ki-skeleton--title"></span>
+                                <span class="ki-skeleton"></span>
+                                <span class="ki-skeleton ki-skeleton--short"></span>
+                            </div>
+                            <div class="ki-trackers">
+                                <span class="ki-chip" style="--i:0">Analytics</span>
+                                <span class="ki-chip" style="--i:1">Ad network</span>
+                                <span class="ki-chip" style="--i:2">Fingerprint</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 02 · trackers blocked -->
+                    <div class="stage-device stage-2">
+                        <div class="ki-browser">
+                            <div class="ki-browser__bar">
+                                <span class="ki-dot"></span><span class="ki-dot"></span><span class="ki-dot"></span>
+                                <span class="ki-url">apple.com/newsroom</span>
+                                <span class="ki-shield" aria-hidden="true">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                    <em>12</em>
+                                </span>
+                            </div>
+                            <div class="ki-browser__page ki-browser__page--clean">
+                                <span class="ki-skeleton ki-skeleton--title"></span>
+                                <span class="ki-skeleton"></span>
+                                <span class="ki-skeleton ki-skeleton--short"></span>
+                            </div>
+                            <div class="ki-blocked-pill">12 trackers blocked</div>
+                        </div>
+                    </div>
+
+                    <!-- 03 · tune per site -->
+                    <div class="stage-device stage-3">
+                        <div class="ki-browser">
+                            <div class="ki-browser__bar">
+                                <span class="ki-dot"></span><span class="ki-dot"></span><span class="ki-dot"></span>
+                                <span class="ki-url">apple.com</span>
+                            </div>
+                            <div class="ki-sheet">
+                                <div class="ki-sheet__title">Site settings · apple.com</div>
+                                <div class="ki-toggle"><span>Block trackers</span><i class="ki-sw ki-sw--on"></i></div>
+                                <div class="ki-toggle"><span>Allow cookies</span><i class="ki-sw"></i></div>
+                                <div class="ki-toggle"><span>Run JavaScript</span><i class="ki-sw ki-sw--on"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="scrolly-step" data-index="1">
+                        <div class="loop-num">01</div>
+                        <h3>Open any site</h3>
+                        <p>No extensions to install, no rules to import. Type an address and Ki loads it
+                            like any browser — only lighter.</p>
+                    </div>
+                    <div class="scrolly-step" data-index="2">
+                        <div class="loop-num">02</div>
+                        <h3>Trackers blocked automatically</h3>
+                        <p>Analytics, ad networks, and fingerprinting scripts are stopped before they run.
+                            The page loads faster because the junk never arrives.</p>
+                    </div>
+                    <div class="scrolly-step" data-index="3">
+                        <div class="loop-num">03</div>
+                        <h3>Tune it per site</h3>
+                        <p>Trust a site you use every day? Open its controls and allow cookies or scripts
+                            just there. Your call, remembered per site — and nothing leaves your phone.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="cta">
     <div class="container">
         <div class="cta-card">
@@ -24,4 +118,8 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ asset('js/motion.js') }}"></script>
 {% endblock %}

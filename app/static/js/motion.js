@@ -1,0 +1,39 @@
+/* Ki motion: scroll reveals + scroll-driven walkthrough.
+   Vanilla, no deps. Respects prefers-reduced-motion. */
+(function () {
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Scroll reveals: [data-reveal] elements get .in-view when visible.
+    var revealables = document.querySelectorAll("[data-reveal]");
+    if (reduced || !("IntersectionObserver" in window)) {
+        revealables.forEach(function (el) { el.classList.add("in-view"); });
+    } else {
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("in-view");
+                    io.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.18 });
+        revealables.forEach(function (el) { io.observe(el); });
+    }
+
+    // Scrollytelling: as each .scrolly-step crosses mid-viewport, stamp its
+    // index on the .scrolly root — CSS swaps the sticky stage state.
+    var scrolly = document.querySelector(".scrolly");
+    if (!scrolly) return;
+    var steps = scrolly.querySelectorAll(".scrolly-step");
+    if (reduced || !("IntersectionObserver" in window)) {
+        scrolly.setAttribute("data-step", steps.length);
+    } else {
+        var sio = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    scrolly.setAttribute("data-step", entry.target.dataset.index);
+                }
+            });
+        }, { rootMargin: "-45% 0px -45% 0px" });
+        steps.forEach(function (step) { sio.observe(step); });
+    }
+})();
