@@ -777,7 +777,7 @@ a:hover { color: var(--ki-accent-hover); }
    ============================================================ */
 
 /* Reveal primitive (motion.js adds .in-view) */
-[data-reveal] {
+.motion-on [data-reveal] {
     opacity: 0;
     transform: translateY(22px);
     transition: opacity .7s cubic-bezier(.2,.8,.2,1) var(--d, 0s),
@@ -810,10 +810,10 @@ a:hover { color: var(--ki-accent-hover); }
 }
 .stage-device {
     position: absolute;
-    opacity: 0; transform: translateY(28px) scale(.95);
     transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1);
     pointer-events: none;
 }
+.motion-on .stage-device { opacity: 0; transform: translateY(28px) scale(.95); }
 [data-step="1"] .stage-1, [data-step="2"] .stage-2, [data-step="3"] .stage-3 {
     opacity: 1; transform: none; pointer-events: auto;
 }
@@ -938,8 +938,18 @@ a:hover { color: var(--ki-accent-hover); }
 /* responsive + reduced motion */
 @media (max-width: 991px) {
     .scrolly-grid { grid-template-columns: 1fr; gap: 0; }
-    .scrolly-stage { display: none; }
-    .scrolly-step { min-height: 0; padding: 1.8rem 0; }
+    /* stage stops being sticky: each device drops inline next to its step */
+    .scrolly-stage, .scrolly-steps { display: contents; }
+    .stage-device, .motion-on .stage-device {
+        position: static; opacity: 1; transform: none;
+        margin: 0 auto 1.4rem; pointer-events: auto;
+    }
+    .stage-1 { order: 1; } .scrolly-step[data-index="1"] { order: 2; }
+    .stage-2 { order: 3; } .scrolly-step[data-index="2"] { order: 4; }
+    .stage-3 { order: 5; } .scrolly-step[data-index="3"] { order: 6; }
+    .scrolly-step { min-height: 0; padding: .25rem 0 2.4rem; opacity: 1; }
+    /* mobile draws every stage fully (no scroll-driven swap) */
+    .ki-chip, .ki-blocked-pill { opacity: 1 !important; transform: none !important; animation: none !important; }
     .ki-how { padding: 4.5rem 0; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -960,3 +970,37 @@ a:hover { color: var(--ki-accent-hover); }
     color: var(--ki-paper);
 }
 [data-theme="dark"] { --ki-muted-soft: #7E86A4; }
+
+/* ---- Polish pass: active-step sync, count-up, blocked chips ---- */
+.ki-count { font-variant-numeric: tabular-nums; }
+
+/* stage 2 — the same trackers, struck out as blocked (top-right, clear of pill) */
+.ki-trackers--blocked {
+    position: absolute; top: 16px; right: 14px; left: auto; bottom: auto;
+    flex-direction: column; align-items: flex-end; gap: .4rem;
+}
+.ki-trackers--blocked .ki-chip {
+    background: var(--ki-paper-soft); color: var(--ki-muted);
+    border-color: var(--ki-border);
+    text-decoration: line-through; text-decoration-color: var(--ki-muted-soft);
+}
+[data-theme="dark"] .ki-trackers--blocked .ki-chip {
+    background: var(--ki-paper-soft); color: var(--ki-muted); border-color: var(--ki-border);
+}
+[data-step="2"] .ki-trackers--blocked .ki-chip {
+    animation: ki-chip-in .5s cubic-bezier(.2,.8,.2,1) forwards;
+    animation-delay: calc(.1s + var(--i) * .12s);
+}
+
+/* desktop only — dim inactive steps, light up the active number */
+@media (min-width: 992px) {
+    .scrolly-step { opacity: .34; transition: opacity .45s ease; }
+    [data-step="1"] .scrolly-step[data-index="1"],
+    [data-step="2"] .scrolly-step[data-index="2"],
+    [data-step="3"] .scrolly-step[data-index="3"] { opacity: 1; }
+    [data-step="1"] .scrolly-step[data-index="1"] .loop-num,
+    [data-step="2"] .scrolly-step[data-index="2"] .loop-num,
+    [data-step="3"] .scrolly-step[data-index="3"] .loop-num {
+        color: var(--ki-accent); -webkit-text-stroke: 0;
+    }
+}
