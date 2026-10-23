@@ -9,6 +9,7 @@ from app.security.headers import SecurityHeadersMiddleware
 from app.security.logging import SecurityLogMiddleware
 from app.security.rate_limit import RateLimitMiddleware
 from app.cache_assets import build_asset_map, make_asset_url
+from app.security.origin_auth import OriginAuthMiddleware
 
 
 class HeadRequestMiddleware(BaseHTTPMiddleware):
@@ -36,6 +37,12 @@ app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(HeadRequestMiddleware)
 app.add_middleware(RateLimitMiddleware)
 app.add_middleware(SecurityLogMiddleware, site_name="941ki.com")
+app.add_middleware(OriginAuthMiddleware, bypass_paths=("/health",))  # outermost; /health is the only path Railway may reach directly
+
+@app.get("/health", include_in_schema=False)
+async def health() -> dict[str, str]:
+    return {"status": "ok"}
+
 
 app.mount(
     "/static",
