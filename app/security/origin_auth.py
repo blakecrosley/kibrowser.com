@@ -38,13 +38,16 @@ class OriginAuthMiddleware(BaseHTTPMiddleware):
             logger.warning("%s is unset: origin auth is OPEN (direct Railway access is not blocked)", ENV_VAR)
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
-        if not self._secret or request.url.path in self._bypass:
+        # The bypass test uses the ASGI scope path: request.url.path is rebuilt from the Host header on
+        # Starlette < 1.0.1 (PYSEC-2026-161), so a crafted Host could make any route look like /health
+        path = request.scope.get("path", "")
+        if not self._secret or path in self._bypass:
             return await call_next(request)
         provided = request.headers.get(HEADER, "")
         if not provided or not hmac.compare_digest(provided, self._secret):
             logger.warning(
                 "origin_auth: missing or invalid X-Origin-Auth on %s %s (peer=%s)",
-                request.method, request.url.path, request.client.host if request.client else "?",
+                request.method, path, request.client.host if request.client else "?",
             )
             return JSONResponse({"error": "unauthorized"}, status_code=401)
         return await call_next(request)
